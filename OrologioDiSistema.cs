@@ -1,0 +1,15 @@
+namespace Attivita.Cli;
+
+public class OrologioDiSistema : IOrologio
+{
+    #region Ctor & Destructor
+    /// <summary>
+    /// Standard Constructor
+    /// </summary>
+    public OrologioDiSistema()
+    {
+    }
+    #endregion
+
+    public DateTime Adesso => DateTime.Now;
+}
