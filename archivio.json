@@ -1,0 +1,42 @@
+[
+  {
+    "id": "542cd0c0-e313-4e40-a2cc-87ba87ea2a85",
+    "Titolo": "Consegnare il report",
+    "Tipo": "normale",
+    "Completata": true,
+    "CreataIl": "2026-10-10T09:00:00",
+    "Scadenza": "2026-10-12T00:00:00",
+    "Priorita": "Bassa",
+    "IntervalloGiorni": null
+  },
+  {
+    "id": "b313bddf-55af-48c0-8f98-bcaf1ad645d1",
+    "Titolo": "Pagare l\u0027affitto",
+    "Tipo": "ricorrente",
+    "Completata": false,
+    "CreataIl": "2026-10-10T09:00:00",
+    "Scadenza": "2026-12-01T00:00:00",
+    "Priorita": "Media",
+    "IntervalloGiorni": 30
+  },
+  {
+    "id": "60e51c54-7440-4579-b12a-b1011c98db12",
+    "Titolo": "Leggere un libro",
+    "Tipo": "normale",
+    "Completata": false,
+    "CreataIl": "2026-10-10T09:00:00",
+    "Scadenza": null,
+    "Priorita": "Media",
+    "IntervalloGiorni": null
+  },
+  {
+    "id": "d0bfd985-71a7-4985-a90f-08fcabcc3622",
+    "Titolo": "Buttare la spazzatura",
+    "Tipo": "normale",
+    "Completata": false,
+    "CreataIl": "2026-10-10T09:00:00",
+    "Scadenza": "2026-10-13T00:00:00",
+    "Priorita": "Alta",
+    "IntervalloGiorni": null
+  }
+]

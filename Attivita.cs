@@ -11,6 +11,8 @@ namespace Attivita.Cli;
 /// </remarks>
 public class Attivita
 {
+    private readonly Guid _id;
+
     /// <summary>Titolo, sempre non vuoto (garantito dal costruttore).</summary>
     private readonly String _titolo;
 
@@ -23,8 +25,8 @@ public class Attivita
     /// <summary>Scadenza; <c>null</c> se l'attività non ne ha una.</summary>
     private DateTime? _scadenza;
 
-    /// <summary>Fonte dell'ora corrente.</summary>
     private readonly IOrologio _orologio;
+    /// <summary>Fonte dell'ora corrente.</summary>
 
     /// <summary>
     /// Ora corrente secondo l'orologio dell'attività.
@@ -53,12 +55,34 @@ public class Attivita
             throw new ArgumentException("Il titolo non può essere vuoto.", nameof(titolo));
         }
 
+        _id = Guid.NewGuid();
         _titolo = titolo;
         Priorita = priorita;
         _orologio = orologio ?? new OrologioDiSistema();
         _creataIl = this._orologio.Adesso;
     }
-    #endregion
+
+    protected Attivita(Guid id, string titolo, Priorita priorita, DateTime? scadenza, DateTime creataIl, bool completata, IOrologio? orologio)
+    {
+        if (string.IsNullOrWhiteSpace(titolo))
+        {
+            throw new ArgumentException("Il titolo non può essere vuoto.", nameof(titolo));
+        }
+        if (id == Guid.Empty)
+        {
+            throw new ArgumentException("ID mancante nel file.", nameof(id));
+        }
+        _id = id;
+        _titolo = titolo;
+        Priorita = priorita;
+        Scadenza = scadenza;
+        _creataIl = creataIl;
+        _completata = completata;
+        _orologio = orologio ?? new OrologioDiSistema();
+    }
+    #endregion    
+
+    public Guid Id => _id;
 
     /// <summary>
     /// Il titolo dell'attività. Non cambia dopo la creazione.
@@ -124,4 +148,10 @@ public class Attivita
     /// <c>false</c> negli altri casi, compreso quando non è impostata una scadenza.
     /// </returns>
     public Boolean EScaduta() => this._scadenza < this._orologio.Adesso && !this._completata;
+
+    internal static Attivita Ripristina(Guid id, String titolo, Priorita priorita, DateTime? scadenza, DateTime creataIl, bool completata,
+    IOrologio? orologio = null)
+    {
+        return new Attivita(id, titolo, priorita, scadenza, creataIl, completata, orologio);
+    }
 }
