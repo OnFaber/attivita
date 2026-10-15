@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GestoreAttivita.Cli/GestoreAttivita.Cli.csproj" />
+    <Project Path="src/GestoreAttivita.Core/GestoreAttivita.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GestoreAttivita.Tests/GestoreAttivita.Tests.csproj" />
+  </Folder>
+</Solution>

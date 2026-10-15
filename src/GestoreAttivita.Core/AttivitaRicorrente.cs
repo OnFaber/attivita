@@ -1,4 +1,4 @@
-namespace Attivita.Cli;
+namespace GestoreAttivita.Core;
 
 /// <summary>
 /// Attività che si ripete: completarla non la chiude, ma ne sposta la scadenza in avanti.

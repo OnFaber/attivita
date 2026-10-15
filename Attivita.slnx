@@ -1,8 +1,0 @@
-<Solution>
-  <Folder Name="/src/">
-    <Project Path="src/Attivita.Cli.csproj" />
-  </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/Attivita.Tests/Attivita.Tests.csproj" />
-  </Folder>
-</Solution>

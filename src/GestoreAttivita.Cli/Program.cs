@@ -1,6 +1,7 @@
 using System.CommandLine;
+using GestoreAttivita.Core;
 
-namespace Attivita.Cli;
+namespace GestoreAttivita.Cli;
 
 public class Program
 {

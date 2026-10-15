@@ -1,4 +1,5 @@
-namespace Attivita.Cli.Tests;
+using GestoreAttivita.Core;
+namespace GestoreAttivita.Tests;
 
 public class AttivitaTests
 {

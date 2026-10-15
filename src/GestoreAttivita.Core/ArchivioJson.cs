@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace Attivita.Cli;
+namespace GestoreAttivita.Core;
 
 public class ArchivioJson : IArchivio
 {

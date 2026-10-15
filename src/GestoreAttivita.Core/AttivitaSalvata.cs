@@ -1,4 +1,4 @@
-namespace Attivita.Cli;
+namespace GestoreAttivita.Core;
 
 public record AttivitaSalvata(
     Guid Id,

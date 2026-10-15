@@ -1,4 +1,4 @@
-namespace Attivita.Cli;
+namespace GestoreAttivita.Core;
 
 /// <summary>
 /// Un'attività da svolgere, con titolo, priorità e una scadenza facoltativa.
