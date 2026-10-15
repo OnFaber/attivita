@@ -11,5 +11,5 @@ public class OrologioDiSistema : IOrologio
     }
     #endregion
 
-    public DateTime Adesso => DateTime.Now;
+    public DateTimeOffset Adesso => DateTimeOffset.UtcNow;
 }

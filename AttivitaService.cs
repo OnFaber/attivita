@@ -22,9 +22,21 @@ public class AttivitaService
         _archivio.Salva(_elenco.Tutte);
     }
 
-    public void Completa(int numero)
+    public Attivita Completa(string prefisso)
     {
-        throw new NotImplementedException();
+        var trovate = _elenco.TrovaPerPrefisso(prefisso);
+
+        switch (trovate.Count)
+        {
+            case 0:
+                throw new InvalidOperationException($"Nessuna attvità con codice \"{prefisso}\" .");
+            case > 1:
+                throw new InvalidOperationException($"Il codice \"{prefisso}\" corrisponde a {trovate.Count} attività: scrivi qualche carattere in più.");
+        }
+        var attivita = trovate.First();
+        attivita.Completa();
+        _archivio.Salva(_elenco.Tutte);
+        return attivita;
     }
 
     public IEnumerable<Attivita> DaFare() => _elenco.DaFare();

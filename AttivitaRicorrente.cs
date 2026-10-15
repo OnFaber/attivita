@@ -1,54 +1,43 @@
 namespace Attivita.Cli;
 
+/// <summary>
+/// Attività che si ripete: completarla non la chiude, ma ne sposta la scadenza in avanti.
+/// </summary>
 public class AttivitaRicorrente : Attivita
 {
-    private readonly TimeSpan _intervallo;
+    private readonly int _intervallo;
 
     /// <summary>
-    /// 
-    /// </summary>
-    public TimeSpan Intervallo => _intervallo;
+    public int Intervallo => _intervallo;
 
-    #region Ctor & Destructor
+    #region Costruttori
     /// <summary>
-    /// Standard Constructor
+    /// Crea un attivita ricorrente nuova, con la data di creazione presa dall'orologio
     /// </summary>
-    public AttivitaRicorrente(string titolo, TimeSpan intervallo, IOrologio? orologio = null)
-        : base(titolo, orologio)
+    public AttivitaRicorrente(String titolo, int intervallo, Priorita? priorita = null, IOrologio? orologio = null)
+    : base(titolo, orologio, priorita)
     {
-        if (intervallo <= TimeSpan.Zero)
-        {
-            throw new ArgumentOutOfRangeException(nameof(intervallo), "L'intervallo deve essere positivo.");
-        }
-        _intervallo = intervallo;
+        _intervallo = Valida(intervallo);
     }
 
-    private AttivitaRicorrente(Guid id, String titolo, Priorita priorita, DateTime? scadenza, DateTime creataIl, TimeSpan intervallo, Boolean completata, IOrologio? orologio)
+    private AttivitaRicorrente(Guid id, String titolo, Priorita priorita, DateOnly? scadenza, DateTimeOffset creataIl, int intervallo, Boolean completata, IOrologio? orologio = null)
     : base(id, titolo, priorita, scadenza, creataIl, completata, orologio)
     {
-        if (intervallo <= TimeSpan.Zero)
-        {
-            throw new ArgumentOutOfRangeException(nameof(Intervallo), "L'intervallo deve essere positivo.");
-        }
-        _intervallo = intervallo;
+        _intervallo = Valida(intervallo);
     }
     #endregion
 
-    internal static AttivitaRicorrente Ripristina(Guid id, String titolo, Priorita priorita, DateTime? scadenza, DateTime creataIl, TimeSpan intervallo, Boolean completata, IOrologio? orologio = null)
+    internal static AttivitaRicorrente Ripristina(Guid id, String titolo, Priorita priorita, DateOnly? scadenza, DateTimeOffset creataIl, int intervallo, Boolean completata, IOrologio? orologio = null)
     {
         return new AttivitaRicorrente(id, titolo, priorita, scadenza, creataIl, intervallo, completata, orologio);
     }
 
     public override void Completa()
     {
-        if (Scadenza.HasValue)
-        {
-            Scadenza = Scadenza.Value + Intervallo;
-        }
-        else
-        {
-            Scadenza = Adesso + Intervallo;
-
-        }
+        var nuova = Scadenza ?? Oggi;
+        do { nuova = nuova.AddDays(Intervallo); } while (nuova <= Oggi);
+        Scadenza = nuova;
     }
+
+    private static int Valida(int giorni) => giorni > 0 ? giorni : throw new ArgumentOutOfRangeException(nameof(giorni), "L'intervallo deve essere positivo.");
 }

@@ -2,5 +2,5 @@ namespace Attivita.Cli;
 
 public interface IOrologio
 {
-    DateTime Adesso { get; }
+    DateTimeOffset Adesso { get; }
 }

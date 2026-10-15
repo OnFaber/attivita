@@ -20,10 +20,10 @@ public class Attivita
     private Boolean _completata;
 
     /// <summary>Istante di creazione, letto dall'orologio nel costruttore.</summary>
-    private readonly DateTime _creataIl;
+    private readonly DateTimeOffset _creataIl;
 
     /// <summary>Scadenza; <c>null</c> se l'attività non ne ha una.</summary>
-    private DateTime? _scadenza;
+    private DateOnly? _scadenza;
 
     private readonly IOrologio _orologio;
     /// <summary>Fonte dell'ora corrente.</summary>
@@ -35,9 +35,11 @@ public class Attivita
     /// È <c>protected</c> perché le sottoclassi (ad esempio <see cref="AttivitaRicorrente"/>)
     /// possano leggere l'ora senza che l'orologio diventi pubblico.
     /// </remarks>
-    protected DateTime Adesso => _orologio.Adesso;
+    protected DateTimeOffset Adesso => _orologio.Adesso;
 
-    #region Ctor & Destructor
+    protected DateOnly Oggi => DateOnly.FromDateTime(Adesso.LocalDateTime);
+
+    #region Ctor
     /// <summary>
     /// Crea una nuova attività non completata e senza scadenza.
     /// </summary>
@@ -46,9 +48,9 @@ public class Attivita
     /// L'orologio da usare; se <c>null</c> viene usato l'orologio di sistema.
     /// Nei test passa un <see cref="OrologioFisso"/>.
     /// </param>
-    /// <param name="priorita">La priorità iniziale.</param>
+    /// <param name="priorita">La priorità iniziale; se <c>null</c> viene usata <see cref="Priorita.Media"/>.</param>
     /// <exception cref="ArgumentException">Se <paramref name="titolo"/> è vuoto o composto solo da spazi.</exception>
-    public Attivita(string titolo, IOrologio? orologio = null, Priorita priorita = Priorita.Media)
+    public Attivita(string titolo, IOrologio? orologio = null, Priorita? priorita = null)
     {
         if (string.IsNullOrWhiteSpace(titolo))
         {
@@ -57,12 +59,12 @@ public class Attivita
 
         _id = Guid.NewGuid();
         _titolo = titolo;
-        Priorita = priorita;
+        Priorita = priorita ?? Priorita.Media;
         _orologio = orologio ?? new OrologioDiSistema();
         _creataIl = this._orologio.Adesso;
     }
 
-    protected Attivita(Guid id, string titolo, Priorita priorita, DateTime? scadenza, DateTime creataIl, bool completata, IOrologio? orologio)
+    protected Attivita(Guid id, string titolo, Priorita priorita, DateOnly? scadenza, DateTimeOffset creataIl, bool completata, IOrologio? orologio)
     {
         if (string.IsNullOrWhiteSpace(titolo))
         {
@@ -75,7 +77,7 @@ public class Attivita
         _id = id;
         _titolo = titolo;
         Priorita = priorita;
-        Scadenza = scadenza;
+        _scadenza = scadenza;
         _creataIl = creataIl;
         _completata = completata;
         _orologio = orologio ?? new OrologioDiSistema();
@@ -92,7 +94,7 @@ public class Attivita
     /// <summary>
     /// Il momento in cui l'attività è stata creata, secondo il suo orologio.
     /// </summary>
-    public DateTime CreataIl => this._creataIl;
+    public DateTimeOffset CreataIl => this._creataIl;
 
     /// <summary>
     /// Indica se l'attività è stata completata.
@@ -113,12 +115,12 @@ public class Attivita
     /// <exception cref="ArgumentException">
     /// Se si imposta una data precedente a <see cref="CreataIl"/>.
     /// </exception>
-    public DateTime? Scadenza
+    public DateOnly? Scadenza
     {
         get => _scadenza;
         set
         {
-            if (value.HasValue && (value < this.CreataIl))
+            if (value is { } giorno && giorno < DateOnly.FromDateTime(CreataIl.LocalDateTime))
             {
                 throw new ArgumentException(
                     "La scadenza non può essere precedente alla data di creazione."
@@ -147,9 +149,9 @@ public class Attivita
     /// <c>true</c> se c'è una scadenza, è già passata e l'attività non è completata;
     /// <c>false</c> negli altri casi, compreso quando non è impostata una scadenza.
     /// </returns>
-    public Boolean EScaduta() => this._scadenza < this._orologio.Adesso && !this._completata;
+    public Boolean EScaduta() => !this._completata && this._scadenza is { } giorno && Oggi > giorno;
 
-    internal static Attivita Ripristina(Guid id, String titolo, Priorita priorita, DateTime? scadenza, DateTime creataIl, bool completata,
+    internal static Attivita Ripristina(Guid id, String titolo, Priorita priorita, DateOnly? scadenza, DateTimeOffset creataIl, bool completata,
     IOrologio? orologio = null)
     {
         return new Attivita(id, titolo, priorita, scadenza, creataIl, completata, orologio);

@@ -2,7 +2,6 @@ namespace Attivita.Cli;
 
 public class ElencoAttivita
 {
-
     /// <summary>
     /// Description
     /// </summary>
@@ -19,7 +18,9 @@ public class ElencoAttivita
         ArgumentNullException.ThrowIfNull(attivita);
         if (_attivita.Contains(attivita))
         {
-            throw new InvalidOperationException($"l'attività \"{attivita.Titolo}\" è già nell'elenco");
+            throw new InvalidOperationException(
+                $"l'attività \"{attivita.Titolo}\" è già nell'elenco"
+            );
         }
         this._attivita.Add(attivita);
     }
@@ -31,6 +32,19 @@ public class ElencoAttivita
 
     public IEnumerable<Attivita> DaFare()
     {
-        return this._attivita.Where(a => !a.Completata).OrderBy(a => a.Scadenza == null).ThenBy(a => a.Scadenza);
+        return this
+            ._attivita.Where(a => !a.Completata)
+            .OrderBy(a => a.Scadenza == null)
+            .ThenBy(a => a.Scadenza);
+    }
+
+    public IReadOnlyList<Attivita> TrovaPerPrefisso(string prefisso)
+    {
+        if (String.IsNullOrWhiteSpace(prefisso))
+        {
+            throw new ArgumentException("Il codice non può essere vuoto.", nameof(prefisso));
+        }
+
+        return this._attivita.Where(a => a.Id.ToString().StartsWith(prefisso, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 }

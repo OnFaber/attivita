@@ -1,12 +1,12 @@
 namespace Attivita.Cli;
 
 public record AttivitaSalvata(
-    Guid id,
+    Guid Id,
     String Titolo,
     String Tipo,
     Boolean Completata,
-    DateTime CreataIl,
-    DateTime? Scadenza,
+    DateTimeOffset CreataIl,
+    DateOnly? Scadenza,
     String Priorita,
     int? IntervalloGiorni
 );

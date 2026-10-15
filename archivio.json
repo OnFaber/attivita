@@ -1,41 +1,41 @@
 [
   {
-    "id": "542cd0c0-e313-4e40-a2cc-87ba87ea2a85",
+    "Id": "9ce84bf3-97f7-47bb-879e-171e42dbfc95",
     "Titolo": "Consegnare il report",
     "Tipo": "normale",
     "Completata": true,
     "CreataIl": "2026-10-10T09:00:00",
-    "Scadenza": "2026-10-12T00:00:00",
+    "Scadenza": "2026-10-20T00:00:00",
     "Priorita": "Bassa",
     "IntervalloGiorni": null
   },
   {
-    "id": "b313bddf-55af-48c0-8f98-bcaf1ad645d1",
+    "Id": "4a9ecf81-74c0-4ad4-ba34-a36edc2eb65e",
     "Titolo": "Pagare l\u0027affitto",
     "Tipo": "ricorrente",
     "Completata": false,
     "CreataIl": "2026-10-10T09:00:00",
-    "Scadenza": "2026-12-01T00:00:00",
+    "Scadenza": "2026-12-20T00:00:00",
     "Priorita": "Media",
     "IntervalloGiorni": 30
   },
   {
-    "id": "60e51c54-7440-4579-b12a-b1011c98db12",
+    "Id": "389298f6-2fca-4fd7-ba19-6d6fc94d3c00",
     "Titolo": "Leggere un libro",
     "Tipo": "normale",
     "Completata": false,
-    "CreataIl": "2026-10-10T09:00:00",
+    "CreataIl": "2026-10-20T09:00:00",
     "Scadenza": null,
     "Priorita": "Media",
     "IntervalloGiorni": null
   },
   {
-    "id": "d0bfd985-71a7-4985-a90f-08fcabcc3622",
+    "Id": "f1b09099-58db-4e6b-be8d-67ef42caba42",
     "Titolo": "Buttare la spazzatura",
     "Tipo": "normale",
     "Completata": false,
     "CreataIl": "2026-10-10T09:00:00",
-    "Scadenza": "2026-10-13T00:00:00",
+    "Scadenza": "2026-10-20T00:00:00",
     "Priorita": "Alta",
     "IntervalloGiorni": null
   }
