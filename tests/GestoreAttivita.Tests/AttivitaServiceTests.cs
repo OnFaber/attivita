@@ -1,8 +1,25 @@
 using GestoreAttivita.Core;
+
 namespace GestoreAttivita.Tests;
 
 public class AttivitaServiceTests
 {
+
+    private static Attivita ConId(string id)
+    {
+        return Attivita.Ripristina(Guid.Parse(id), "Test", Priorita.Media, null, new DateTimeOffset(2026, 10, 1, 9, 0, 0, TimeSpan.Zero), false);
+    }
+
+    [Fact]
+    public void Completa_CodiceAmbiguo_LanciaInvalidOperationException()
+    {
+        ;
+        ArchivioInMemoria archivio = new ArchivioInMemoria(ConId("aaaaaa00-0000-0000-0000-000000000001"), ConId("aaaaaa00-0000-0000-0000-000000000002"));
+        AttivitaService service = new AttivitaService(archivio);
+
+        Assert.Throws<InvalidOperationException>(() => service.Completa("aaaaaa"));
+        Assert.Equal(0, archivio.Salvataggi);
+    }
 
     [Fact]
     public void Completa_CodiceInesistente_LanciaInvalidOperationException()
