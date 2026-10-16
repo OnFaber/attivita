@@ -25,19 +25,8 @@ public class Attivita
     /// <summary>Scadenza; <c>null</c> se l'attività non ne ha una.</summary>
     private DateOnly? _scadenza;
 
-    private readonly IOrologio _orologio;
     /// <summary>Fonte dell'ora corrente.</summary>
-
-    /// <summary>
-    /// Ora corrente secondo l'orologio dell'attività.
-    /// </summary>
-    /// <remarks>
-    /// È <c>protected</c> perché le sottoclassi (ad esempio <see cref="AttivitaRicorrente"/>)
-    /// possano leggere l'ora senza che l'orologio diventi pubblico.
-    /// </remarks>
-    protected DateTimeOffset Adesso => _orologio.Adesso;
-
-    protected DateOnly Oggi => DateOnly.FromDateTime(Adesso.LocalDateTime);
+    private readonly IOrologio _orologio;
 
     #region Ctor
     /// <summary>
@@ -64,7 +53,15 @@ public class Attivita
         _creataIl = this._orologio.Adesso;
     }
 
-    protected Attivita(Guid id, string titolo, Priorita priorita, DateOnly? scadenza, DateTimeOffset creataIl, bool completata, IOrologio? orologio)
+    protected Attivita(
+        Guid id,
+        string titolo,
+        Priorita priorita,
+        DateOnly? scadenza,
+        DateTimeOffset creataIl,
+        bool completata,
+        IOrologio? orologio
+    )
     {
         if (string.IsNullOrWhiteSpace(titolo))
         {
@@ -82,7 +79,7 @@ public class Attivita
         _completata = completata;
         _orologio = orologio ?? new OrologioDiSistema();
     }
-    #endregion    
+    #endregion
 
     public Guid Id => _id;
 
@@ -120,7 +117,7 @@ public class Attivita
         get => _scadenza;
         set
         {
-            if (value is { } giorno && giorno < DateOnly.FromDateTime(CreataIl.LocalDateTime))
+            if (value is DateOnly giorno && giorno < DateOnly.FromDateTime(CreataIl.LocalDateTime))
             {
                 throw new ArgumentException(
                     "La scadenza non può essere precedente alla data di creazione."
@@ -129,6 +126,17 @@ public class Attivita
             this._scadenza = value;
         }
     }
+
+    /// <summary>
+    /// Ora corrente secondo l'orologio dell'attività.
+    /// </summary>
+    /// <remarks>
+    /// È <c>protected</c> perché le sottoclassi (ad esempio <see cref="AttivitaRicorrente"/>)
+    /// possano leggere l'ora senza che l'orologio diventi pubblico.
+    /// </remarks>
+    protected DateTimeOffset Adesso => _orologio.Adesso;
+
+    protected DateOnly Oggi => DateOnly.FromDateTime(Adesso.LocalDateTime);
 
     /// <summary>
     /// Segna l'attività come completata.
@@ -151,8 +159,15 @@ public class Attivita
     /// </returns>
     public Boolean EScaduta() => !this._completata && this._scadenza is { } giorno && Oggi > giorno;
 
-    internal static Attivita Ripristina(Guid id, String titolo, Priorita priorita, DateOnly? scadenza, DateTimeOffset creataIl, bool completata,
-    IOrologio? orologio = null)
+    internal static Attivita Ripristina(
+        Guid id,
+        String titolo,
+        Priorita priorita,
+        DateOnly? scadenza,
+        DateTimeOffset creataIl,
+        bool completata,
+        IOrologio? orologio = null
+    )
     {
         return new Attivita(id, titolo, priorita, scadenza, creataIl, completata, orologio);
     }

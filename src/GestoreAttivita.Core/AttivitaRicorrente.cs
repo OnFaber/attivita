@@ -34,7 +34,7 @@ public class AttivitaRicorrente : Attivita
 
     public override void Completa()
     {
-        var nuova = Scadenza ?? Oggi;
+        var nuova = base.Scadenza ?? Oggi;
         do { nuova = nuova.AddDays(Intervallo); } while (nuova <= Oggi);
         Scadenza = nuova;
     }
